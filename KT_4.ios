@@ -1,0 +1,168 @@
+
+!
+! Last configuration change at 06:11:11 UTC Thu May 28 2026
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname KT_4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 121.160.0.4 255.255.255.255
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 121.160.42.81 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/1
+ no shutdown
+ no ip address
+!
+interface Ethernet0/2
+ no shutdown
+ no ip address
+!
+interface Ethernet0/3
+ no shutdown
+ ip address 121.160.42.66 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+!
+interface Ethernet2/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/3
+ no shutdown
+ no ip address
+ shutdown
+!
+router ospf 1
+ prefix-suppression
+ network 121.160.0.4 0.0.0.0 area 0
+ network 121.160.42.0 0.0.0.255 area 0
+!
+router bgp 1111
+ bgp log-neighbor-changes
+ neighbor 121.160.0.6 remote-as 1111
+ neighbor 121.160.0.6 update-source Loopback0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
