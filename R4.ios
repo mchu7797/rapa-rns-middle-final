@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 05:08:04 UTC Thu May 28 2026
+! Last configuration change at 06:05:27 UTC Thu May 28 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -136,6 +136,7 @@ router bgp 123
  neighbor 123.45.0.2 remote-as 123
  neighbor 123.45.0.2 update-source Loopback0
  neighbor 123.45.0.2 next-hop-self
+ neighbor 123.45.67.41 remote-as 1111
 !
 ip forward-protocol nd
 !
