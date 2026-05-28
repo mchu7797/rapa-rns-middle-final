@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 04:50:49 UTC Thu May 28 2026
+! Last configuration change at 07:22:20 UTC Thu May 28 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -73,8 +73,7 @@ interface Ethernet0/0
 !
 interface Ethernet0/1
  no shutdown
- no ip address
- shutdown
+ ip address 123.45.68.245 255.255.255.252
 !
 interface Ethernet0/2
  no shutdown
@@ -137,6 +136,7 @@ router bgp 123
  neighbor 123.45.0.1 remote-as 123
  neighbor 123.45.0.1 update-source Loopback0
  neighbor 123.45.0.1 next-hop-self
+ neighbor 123.45.68.246 remote-as 1234
 !
 ip forward-protocol nd
 !
