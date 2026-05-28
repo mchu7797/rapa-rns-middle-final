@@ -1,0 +1,192 @@
+
+!
+! Last configuration change at 07:12:17 UTC Thu May 28 2026
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname LG_2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ ip address 63.250.0.2 255.255.255.255
+!
+interface Ethernet0/0
+ no shutdown
+ no ip address
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 63.250.124.138 255.255.255.252
+!
+interface Ethernet0/2
+ no shutdown
+ ip address 63.250.124.202 255.255.255.252
+!
+interface Ethernet0/3
+ no shutdown
+ no ip address
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+!
+interface Ethernet2/0
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/1
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/2
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Ethernet2/3
+ no shutdown
+ no ip address
+ shutdown
+!
+interface Serial3/0
+ no shutdown
+ ip address 61.250.1.254 255.255.255.252
+ serial restart-delay 0
+!
+interface Serial3/1
+ no shutdown
+ no ip address
+ serial restart-delay 0
+!
+interface Serial3/2
+ no shutdown
+ no ip address
+ serial restart-delay 0
+!
+interface Serial3/3
+ no shutdown
+ no ip address
+ serial restart-delay 0
+!
+router ospf 1
+ prefix-suppression
+ network 63.250.0.2 0.0.0.0 area 0
+ network 63.250.124.0 0.0.0.255 area 0
+!
+router bgp 65535
+ bgp log-neighbor-changes
+ bgp confederation identifier 1112
+ bgp confederation peers 65536 
+ neighbor 61.250.1.253 remote-as 1111
+ neighbor 63.250.0.1 remote-as 65535
+ neighbor 63.250.0.1 update-source Loopback0
+ neighbor 63.250.0.1 next-hop-self
+ neighbor 63.250.0.4 remote-as 65536
+ neighbor 63.250.0.4 ebgp-multihop 2
+ neighbor 63.250.0.4 update-source Loopback0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
