@@ -155,6 +155,7 @@ router bgp 1111
  neighbor 61.250.1.254 remote-as 1112
  neighbor 121.160.0.6 remote-as 1111
  neighbor 121.160.0.6 update-source Loopback0
+ neighbor 121.160.0.6 next-hop-self
 !
 ip forward-protocol nd
 !
