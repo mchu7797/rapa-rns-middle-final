@@ -17,6 +17,10 @@
 
 ## 전체 구성 개요
 
+### PNETLab 전체 토폴로지
+
+![PNETLab 전체 토폴로지](images/pnet_full.png)
+
 | 구분 | 사업자 | BGP AS | 역할 |
 |------|--------|--------|------|
 | Global SP | AT&T | AS 123 | 글로벌 백본 (P/PE 구조) |
