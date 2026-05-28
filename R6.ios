@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 02:56:33 UTC Thu May 28 2026
+! Last configuration change at 05:02:16 UTC Thu May 28 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -62,9 +62,14 @@ redundancy
 !
 !
 !
+interface Loopback0
+ no shutdown
+ ip address 123.45.0.6 255.255.255.255
+!
 interface Ethernet0/0
  no shutdown
  ip address 123.45.67.14 255.255.255.252
+ ip ospf network point-to-point
 !
 interface Ethernet0/1
  no shutdown
@@ -119,6 +124,18 @@ interface Ethernet2/3
  no shutdown
  no ip address
  shutdown
+!
+router ospf 1
+ prefix-suppression
+ passive-interface Ethernet0/2
+ network 123.45.0.6 0.0.0.0 area 0
+ network 123.45.67.0 0.0.0.255 area 0
+!
+router bgp 123
+ bgp log-neighbor-changes
+ neighbor 123.45.0.2 remote-as 123
+ neighbor 123.45.0.2 update-source Loopback0
+ neighbor 123.45.0.2 next-hop-self
 !
 ip forward-protocol nd
 !
