@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 06:11:17 UTC Thu May 28 2026
+! Last configuration change at 06:40:18 UTC Thu May 28 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -126,6 +126,7 @@ interface Ethernet2/3
 !
 router ospf 1
  prefix-suppression
+ passive-interface Ethernet0/0
  network 121.160.0.1 0.0.0.0 area 0
  network 121.160.42.0 0.0.0.255 area 0
 !
