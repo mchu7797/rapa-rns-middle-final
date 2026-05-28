@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 07:10:09 UTC Thu May 28 2026
+! Last configuration change at 07:39:07 UTC Thu May 28 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -84,7 +84,7 @@ interface Ethernet0/2
 !
 interface Ethernet0/3
  no shutdown
- no ip address
+ ip address 61.250.1.238 255.255.255.252
 !
 interface Ethernet1/0
  no shutdown
@@ -131,12 +131,14 @@ router bgp 65535
  bgp log-neighbor-changes
  bgp confederation identifier 1112
  bgp confederation peers 65536 
+ network 61.250.1.236 mask 255.255.255.252
  neighbor 63.250.0.1 remote-as 65535
  neighbor 63.250.0.1 update-source Loopback0
  neighbor 63.250.0.1 next-hop-self
  neighbor 63.250.0.4 remote-as 65536
  neighbor 63.250.0.4 ebgp-multihop 2
  neighbor 63.250.0.4 update-source Loopback0
+ neighbor 63.250.0.4 next-hop-self
 !
 ip forward-protocol nd
 !

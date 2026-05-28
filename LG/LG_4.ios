@@ -1,6 +1,6 @@
 
 !
-! Last configuration change at 07:10:30 UTC Thu May 28 2026
+! Last configuration change at 07:36:45 UTC Thu May 28 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -134,9 +134,11 @@ router bgp 65536
  neighbor 63.250.0.2 remote-as 65535
  neighbor 63.250.0.2 ebgp-multihop 2
  neighbor 63.250.0.2 update-source Loopback0
+ neighbor 63.250.0.2 next-hop-self
  neighbor 63.250.0.3 remote-as 65535
  neighbor 63.250.0.3 ebgp-multihop 2
  neighbor 63.250.0.3 update-source Loopback0
+ neighbor 63.250.0.3 next-hop-self
 !
 ip forward-protocol nd
 !
