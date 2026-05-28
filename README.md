@@ -156,21 +156,21 @@ echo Welcome to NAVER > /var/www/html/index.html
 
 ### Configuration
 
-- [ ] `show run | sec ospf`
-- [ ] `show run | sec bgp`
-- [ ] `show int des`
+- [*] `show run | sec ospf`
+- [*] `show run | sec bgp`
+- [*] `show int des`
 
 ### Global & Local SP
 
-- [ ] OSPF Neighbor Table
-- [ ] OSPF Routing Table
-- [ ] BGP Neighbor Table
-- [ ] BGP Table
-- [ ] BGP Routing Table
+- [*] OSPF Neighbor Table
+- [*] OSPF Routing Table
+- [*] BGP Neighbor Table
+- [*] BGP Table
+- [*] BGP Routing Table
 
 ### User ↔ CP 통신
 
-- [ ] Local User → Local CP 통신 Flow 및 학습 경로
-- [ ] Local User → Global CP 통신 Flow 및 학습 경로
-- [ ] Global User → Local CP 통신 Flow 및 학습 경로
-- [ ] Global User → Global CP 통신 Flow 및 학습 경로
+- [*] Local User → Local CP 통신 Flow 및 학습 경로
+- [*] Local User → Global CP 통신 Flow 및 학습 경로
+- [*] Global User → Local CP 통신 Flow 및 학습 경로
+- [*] Global User → Global CP 통신 Flow 및 학습 경로
