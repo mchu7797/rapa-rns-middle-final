@@ -1,0 +1,43 @@
+---
+# ============================================================================
+#  검증 / 제출 자료 수집
+#  README 의 "제출 항목"(show run | sec ospf|bgp, show int des, OSPF/BGP 테이블)을
+#  장비별로 reports/<hostname>/show_outputs.txt 에 저장한다.
+# ============================================================================
+- name: OSPF/BGP 상태 수집
+  hosts: routers
+  gather_facts: false
+  vars:
+    output_dir: "{{ playbook_dir }}/reports/{{ inventory_hostname }}"
+    show_commands:
+      - show running-config | section ospf
+      - show running-config | section bgp
+      - show ip interface brief
+      - show ip ospf neighbor
+      - show ip route ospf
+      - show ip bgp summary
+      - show ip bgp
+  tasks:
+    - name: 출력 디렉터리 생성
+      ansible.builtin.file:
+        path: "{{ output_dir }}"
+        state: directory
+      delegate_to: localhost
+
+    - name: show 명령 실행
+      cisco.ios.ios_command:
+        commands: "{{ show_commands }}"
+      register: cmd_out
+
+    - name: 결과 파일로 저장
+      ansible.builtin.copy:
+        dest: "{{ output_dir }}/show_outputs.txt"
+        content: |
+          {% for item in show_commands | zip(cmd_out.stdout) %}
+          ========================================================
+          # {{ item.0 }}
+          ========================================================
+          {{ item.1 }}
+
+          {% endfor %}
+      delegate_to: localhost

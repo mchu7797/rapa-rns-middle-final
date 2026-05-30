@@ -1,0 +1,10 @@
+router ospf {{ ospf_process_id }}
+{% if ospf_prefix_suppression | default(false) %}
+ prefix-suppression
+{% endif %}
+{% for pi in ospf_passive_interfaces | default([]) %}
+ passive-interface {{ pi }}
+{% endfor %}
+{% for net in ospf_networks %}
+ network {{ net.prefix }} {{ net.wildcard }} area {{ net.area }}
+{% endfor %}

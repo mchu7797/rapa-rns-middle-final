@@ -1,0 +1,18 @@
+---
+# KT_2 — Kakao(Local CP) 수용
+interfaces:
+  - { name: Loopback0,   ipv4: 121.160.0.2,  mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/0, ipv4: 121.160.42.9, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/1, ipv4: 121.160.42.2, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/2, ipv4: 121.160.42.29, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/3, ipv4: 121.160.42.65, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet1/0, ipv4: 121.160.1.1,  mask: 255.255.255.252, description: "Kakao CP link" }
+
+ospf_networks:
+  - { prefix: 121.160.0.2,  wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 121.160.42.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_networks:
+  - { prefix: 121.160.1.0, mask: 255.255.255.252 }
+bgp_neighbors:
+  - { ip: 121.160.0.6, remote_as: 1111, update_source: Loopback0, next_hop_self: true, description: "iBGP to KT_6 (RR)" }

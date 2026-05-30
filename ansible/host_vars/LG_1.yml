@@ -1,0 +1,19 @@
+---
+# LG_1 — Sub-AS 65535, 국제 피어링 라우터 (AT&T IXP 접속)
+interfaces:
+  - { name: Loopback0,   ipv4: 63.250.0.1,     mask: 255.255.255.255, description: "Router-ID / iBGP update-source" }
+  - { name: Ethernet0/0, ipv4: 123.45.67.42,   mask: 255.255.255.248, description: "International Peering @ IXP (eBGP to AT&T)" }
+  - { name: Ethernet0/1, ipv4: 63.250.124.137, mask: 255.255.255.252 }
+  - { name: Ethernet0/2, ipv4: 63.250.124.145, mask: 255.255.255.252 }
+
+ospf_passive_interfaces:
+  - Ethernet0/0
+ospf_networks:
+  - { prefix: 63.250.0.1,   wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 63.250.124.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 63.250.0.2,   remote_as: 65535, update_source: Loopback0, next_hop_self: true, description: "iBGP to LG_2" }
+  - { ip: 63.250.0.3,   remote_as: 65535, update_source: Loopback0, next_hop_self: true, description: "iBGP to LG_3" }
+  - { ip: 123.45.67.45, remote_as: 123,   description: "eBGP to AT&T R4" }
+  - { ip: 123.45.67.46, remote_as: 123,   description: "eBGP to AT&T R6" }

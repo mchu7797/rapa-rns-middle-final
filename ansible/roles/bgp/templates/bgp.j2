@@ -1,0 +1,33 @@
+router bgp {{ bgp_asn }}
+{% if bgp_log_neighbor_changes | default(true) %}
+ bgp log-neighbor-changes
+{% endif %}
+{% if bgp_confederation is defined %}
+ bgp confederation identifier {{ bgp_confederation.identifier }}
+ bgp confederation peers {{ bgp_confederation.peers | join(' ') }}
+{% endif %}
+{% for net in bgp_networks | default([]) %}
+{% if net.mask is defined %}
+ network {{ net.prefix }} mask {{ net.mask }}
+{% else %}
+ network {{ net.prefix }}
+{% endif %}
+{% endfor %}
+{% for nbr in bgp_neighbors | default([]) %}
+ neighbor {{ nbr.ip }} remote-as {{ nbr.remote_as }}
+{% if nbr.description is defined %}
+ neighbor {{ nbr.ip }} description {{ nbr.description }}
+{% endif %}
+{% if nbr.ebgp_multihop is defined %}
+ neighbor {{ nbr.ip }} ebgp-multihop {{ nbr.ebgp_multihop }}
+{% endif %}
+{% if nbr.update_source is defined %}
+ neighbor {{ nbr.ip }} update-source {{ nbr.update_source }}
+{% endif %}
+{% if nbr.next_hop_self | default(false) %}
+ neighbor {{ nbr.ip }} next-hop-self
+{% endif %}
+{% if nbr.route_reflector_client | default(false) %}
+ neighbor {{ nbr.ip }} route-reflector-client
+{% endif %}
+{% endfor %}

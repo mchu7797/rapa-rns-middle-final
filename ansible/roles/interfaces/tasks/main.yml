@@ -1,0 +1,6 @@
+---
+- name: L3 인터페이스 설정 적용
+  cisco.ios.ios_config:
+    src: interfaces.j2
+  when: interfaces is defined
+  tags: [interfaces]

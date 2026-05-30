@@ -1,0 +1,5 @@
+---
+- name: 기본 시스템 설정 적용 (hostname / 공통 서비스)
+  cisco.ios.ios_config:
+    src: common.j2
+  tags: [common]

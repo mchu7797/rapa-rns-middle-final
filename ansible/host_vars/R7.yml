@@ -1,0 +1,17 @@
+---
+# R7 — AT&T PE, Google(Global CP) 와 eBGP 피어링
+interfaces:
+  - { name: Loopback0,   ipv4: 123.45.0.7,    mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/0, ipv4: 123.45.68.38,  mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/1, ipv4: 123.45.68.245, mask: 255.255.255.252, description: "eBGP peering to Google" }
+  - { name: Ethernet1/0, ipv4: 123.45.68.50,  mask: 255.255.255.252, ospf_network: point-to-point }
+
+ospf_passive_interfaces:
+  - Ethernet0/1
+ospf_networks:
+  - { prefix: 123.45.0.7,  wildcard: 0.0.0.0,   area: 1 }
+  - { prefix: 123.45.68.0, wildcard: 0.0.0.255, area: 1 }
+
+bgp_neighbors:
+  - { ip: 123.45.0.1,     remote_as: 123,  update_source: Loopback0, next_hop_self: true, description: "iBGP to R1 (RR)" }
+  - { ip: 123.45.68.246,  remote_as: 1234, description: "eBGP to Google" }

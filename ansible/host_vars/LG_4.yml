@@ -1,0 +1,14 @@
+---
+# LG_4 — Sub-AS 65536 (Confederation peer of 65535)
+interfaces:
+  - { name: Loopback0,   ipv4: 63.250.0.4,     mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/1, ipv4: 63.250.124.205, mask: 255.255.255.252 }
+  - { name: Ethernet0/2, ipv4: 63.250.124.201, mask: 255.255.255.252 }
+
+ospf_networks:
+  - { prefix: 63.250.0.4,   wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 63.250.124.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 63.250.0.2, remote_as: 65535, ebgp_multihop: 2, update_source: Loopback0, next_hop_self: true, description: "Confed peer to LG_2 (AS65535)" }
+  - { ip: 63.250.0.3, remote_as: 65535, ebgp_multihop: 2, update_source: Loopback0, next_hop_self: true, description: "Confed peer to LG_3 (AS65535)" }

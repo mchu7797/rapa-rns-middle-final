@@ -1,0 +1,17 @@
+---
+# R6 — AT&T PE, 국제 피어링(IXP)으로 KT/LG 와 eBGP
+interfaces:
+  - { name: Loopback0,   ipv4: 123.45.0.6,   mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/0, ipv4: 123.45.67.14, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/2, ipv4: 123.45.67.46, mask: 255.255.255.248, description: "International Peering @ IXP (123.45.67.40/29)" }
+
+ospf_passive_interfaces:
+  - Ethernet0/2
+ospf_networks:
+  - { prefix: 123.45.0.6,  wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 123.45.67.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 123.45.0.2,    remote_as: 123,  update_source: Loopback0, next_hop_self: true, description: "iBGP to R2 (RR)" }
+  - { ip: 123.45.67.41,  remote_as: 1111, description: "eBGP to KT_1" }
+  - { ip: 123.45.67.42,  remote_as: 1112, description: "eBGP to LG_1" }

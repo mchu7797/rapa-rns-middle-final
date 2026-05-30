@@ -1,0 +1,17 @@
+---
+# KT_6 — KT iBGP Route Reflector
+interfaces:
+  - { name: Loopback0,   ipv4: 121.160.0.6,   mask: 255.255.255.255, description: "Router-ID / RR" }
+  - { name: Ethernet0/1, ipv4: 121.160.42.34, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/2, ipv4: 121.160.42.30, mask: 255.255.255.252, ospf_network: point-to-point }
+
+ospf_networks:
+  - { prefix: 121.160.0.6,  wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 121.160.42.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 121.160.0.1, remote_as: 1111, update_source: Loopback0, route_reflector_client: true, description: "RR client KT_1" }
+  - { ip: 121.160.0.2, remote_as: 1111, update_source: Loopback0, route_reflector_client: true, description: "RR client KT_2" }
+  - { ip: 121.160.0.3, remote_as: 1111, update_source: Loopback0, route_reflector_client: true, description: "RR client KT_3" }
+  - { ip: 121.160.0.4, remote_as: 1111, update_source: Loopback0, route_reflector_client: true, description: "RR client KT_4" }
+  - { ip: 121.160.0.5, remote_as: 1111, update_source: Loopback0, route_reflector_client: true, description: "RR client KT_5" }

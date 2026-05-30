@@ -1,0 +1,17 @@
+---
+# R5 — AT&T PE, Global User 서브넷 수용
+interfaces:
+  - { name: Loopback0,   ipv4: 123.45.0.5,   mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/0, ipv4: 123.45.67.18, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/1, ipv4: 123.45.1.1,   mask: 255.255.255.252, description: "Global User Subnet GW" }
+  - { name: Ethernet2/0, ipv4: 123.45.68.41, mask: 255.255.255.252, ospf_network: point-to-point }
+
+ospf_networks:
+  - { prefix: 123.45.0.5,  wildcard: 0.0.0.0,   area: 1 }
+  - { prefix: 123.45.67.0, wildcard: 0.0.0.255, area: 0 }
+  - { prefix: 123.45.68.0, wildcard: 0.0.0.255, area: 1 }
+
+bgp_networks:
+  - { prefix: 123.45.1.0, mask: 255.255.255.252 }
+bgp_neighbors:
+  - { ip: 123.45.0.1, remote_as: 123, update_source: Loopback0, next_hop_self: true, description: "iBGP to R1 (RR)" }

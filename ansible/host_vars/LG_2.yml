@@ -1,0 +1,22 @@
+---
+# LG_2 — Sub-AS 65535, 국내 피어링 라우터 (KT_3 와 Serial 직결 eBGP)
+interfaces:
+  - { name: Loopback0,   ipv4: 63.250.0.2,     mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/1, ipv4: 63.250.124.138, mask: 255.255.255.252 }
+  - { name: Ethernet0/2, ipv4: 63.250.124.202, mask: 255.255.255.252 }
+  - name: Serial3/0
+    ipv4: 61.250.1.254
+    mask: 255.255.255.252
+    description: "Domestic Peering to KT_3"
+    extra_config:
+      - serial restart-delay 0
+
+ospf_networks:
+  - { prefix: 63.250.0.2,   wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 63.250.124.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 61.250.1.253, remote_as: 1111,  description: "eBGP Domestic Peering to KT_3" }
+  - { ip: 63.250.0.1,   remote_as: 65535, update_source: Loopback0, next_hop_self: true, description: "iBGP to LG_1" }
+  - { ip: 63.250.0.3,   remote_as: 65535, update_source: Loopback0, next_hop_self: true, description: "iBGP to LG_3" }
+  - { ip: 63.250.0.4,   remote_as: 65536, ebgp_multihop: 2, update_source: Loopback0, next_hop_self: true, description: "Confed peer to LG_4 (AS65536)" }

@@ -1,0 +1,6 @@
+---
+- name: OSPF 설정 적용
+  cisco.ios.ios_config:
+    src: ospf.j2
+  when: ospf_networks is defined
+  tags: [ospf]

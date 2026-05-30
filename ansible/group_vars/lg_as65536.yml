@@ -1,0 +1,6 @@
+---
+# LG Confederation 서브 AS 65536 (LG_4)
+bgp_asn: 65536
+bgp_confederation:
+  identifier: 1112
+  peers: [65535]

@@ -1,0 +1,18 @@
+---
+# LG_3 — Sub-AS 65535, Naver(Local CP) 수용
+interfaces:
+  - { name: Loopback0,   ipv4: 63.250.0.3,     mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/1, ipv4: 63.250.124.206, mask: 255.255.255.252 }
+  - { name: Ethernet0/2, ipv4: 63.250.124.146, mask: 255.255.255.252 }
+  - { name: Ethernet0/3, ipv4: 61.250.1.238,   mask: 255.255.255.252, description: "Naver CP link" }
+
+ospf_networks:
+  - { prefix: 63.250.0.3,   wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 63.250.124.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_networks:
+  - { prefix: 61.250.1.236, mask: 255.255.255.252 }
+bgp_neighbors:
+  - { ip: 63.250.0.1, remote_as: 65535, update_source: Loopback0, next_hop_self: true, description: "iBGP to LG_1" }
+  - { ip: 63.250.0.2, remote_as: 65535, update_source: Loopback0, next_hop_self: true, description: "iBGP to LG_2" }
+  - { ip: 63.250.0.4, remote_as: 65536, ebgp_multihop: 2, update_source: Loopback0, next_hop_self: true, description: "Confed peer to LG_4 (AS65536)" }

@@ -1,0 +1,22 @@
+---
+# KT_3 — 국내 피어링 라우터 (LG_2 와 Serial 직결 eBGP)
+interfaces:
+  - { name: Loopback0,   ipv4: 121.160.0.3,   mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/0, ipv4: 121.160.42.10, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/1, ipv4: 121.160.42.33, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/2, ipv4: 121.160.42.6,  mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/3, ipv4: 121.160.42.69, mask: 255.255.255.252, ospf_network: point-to-point }
+  - name: Serial3/0
+    ipv4: 61.250.1.253
+    mask: 255.255.255.252
+    description: "Domestic Peering to LG_2"
+    extra_config:
+      - serial restart-delay 0
+
+ospf_networks:
+  - { prefix: 121.160.0.3,  wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 121.160.42.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 61.250.1.254, remote_as: 1112, description: "eBGP Domestic Peering to LG_2" }
+  - { ip: 121.160.0.6,  remote_as: 1111, update_source: Loopback0, next_hop_self: true, description: "iBGP to KT_6 (RR)" }

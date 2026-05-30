@@ -1,0 +1,13 @@
+---
+# KT_5 — 내부 전송 라우터 (광고 네트워크 없음, next-hop-self 불필요)
+interfaces:
+  - { name: Loopback0,   ipv4: 121.160.0.5,   mask: 255.255.255.255, description: "Router-ID" }
+  - { name: Ethernet0/0, ipv4: 121.160.42.82, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet0/3, ipv4: 121.160.42.70, mask: 255.255.255.252, ospf_network: point-to-point }
+
+ospf_networks:
+  - { prefix: 121.160.0.5,  wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 121.160.42.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 121.160.0.6, remote_as: 1111, update_source: Loopback0, description: "iBGP to KT_6 (RR)" }

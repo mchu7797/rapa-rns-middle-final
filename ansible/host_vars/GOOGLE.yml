@@ -1,0 +1,14 @@
+---
+# GOOGLE — Global CP (AS 1234). IGP(OSPF) 없음, AT&T 와 eBGP 만 운용.
+interfaces:
+  - { name: Ethernet0/0, ipv4: 123.45.68.246, mask: 255.255.255.252, description: "eBGP to AT&T R7" }
+  - { name: Ethernet0/1, ipv4: 123.45.68.250, mask: 255.255.255.252, description: "eBGP to AT&T R8" }
+  - { name: Ethernet0/2, ipv4: 8.8.8.62,      mask: 255.255.255.0,   description: "Google Content Network (8.8.8.0/24)" }
+
+# ospf_networks 미정의 → ospf 롤은 자동 스킵
+
+bgp_networks:
+  - { prefix: 8.8.8.0, mask: 255.255.255.0 }
+bgp_neighbors:
+  - { ip: 123.45.68.245, remote_as: 123, description: "eBGP to AT&T R7" }
+  - { ip: 123.45.68.249, remote_as: 123, description: "eBGP to AT&T R8" }

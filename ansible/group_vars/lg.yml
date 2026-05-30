@@ -1,0 +1,4 @@
+---
+# LG U+ — Local SP (BGP Confederation, identifier 1112)
+# bgp_asn / bgp_confederation 은 서브 AS 그룹(lg_as65535 / lg_as65536)에서 정의한다.
+site_name: "LG U+ (Local SP) - Confederation 1112"

@@ -1,0 +1,16 @@
+---
+# ============================================================================
+#  전체 네트워크 구성 배포
+#    ansible-playbook site.yml                 # 전체
+#    ansible-playbook site.yml --limit kt       # KT 만
+#    ansible-playbook site.yml --tags bgp       # BGP 만
+#    ansible-playbook site.yml --check --diff    # 드라이런(미적용 diff 확인)
+# ============================================================================
+- name: 통신사 네트워크 구성 배포 (common -> interfaces -> ospf -> bgp)
+  hosts: routers
+  gather_facts: false
+  roles:
+    - common
+    - interfaces
+    - ospf
+    - bgp

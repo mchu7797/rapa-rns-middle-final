@@ -1,0 +1,6 @@
+---
+- name: BGP 설정 적용
+  cisco.ios.ios_config:
+    src: bgp.j2
+  when: bgp_asn is defined
+  tags: [bgp]

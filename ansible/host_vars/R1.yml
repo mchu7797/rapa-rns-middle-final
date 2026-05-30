@@ -1,0 +1,18 @@
+---
+# R1 — AT&T P (Provider), Route Reflector
+interfaces:
+  - { name: Loopback0,   ipv4: 123.45.0.1,  mask: 255.255.255.255, description: "Router-ID / iBGP RR" }
+  - { name: Ethernet0/0, ipv4: 123.45.67.1, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet1/0, ipv4: 123.45.67.5, mask: 255.255.255.252, ospf_network: point-to-point }
+  - { name: Ethernet2/0, ipv4: 123.45.67.17, mask: 255.255.255.252, ospf_network: point-to-point }
+
+ospf_networks:
+  - { prefix: 123.45.0.1,  wildcard: 0.0.0.0,   area: 0 }
+  - { prefix: 123.45.67.0, wildcard: 0.0.0.255, area: 0 }
+
+bgp_neighbors:
+  - { ip: 123.45.0.2, remote_as: 123, update_source: Loopback0, description: "iBGP peer R2 (RR)" }
+  - { ip: 123.45.0.3, remote_as: 123, update_source: Loopback0, route_reflector_client: true, description: "RR client R3" }
+  - { ip: 123.45.0.5, remote_as: 123, update_source: Loopback0, route_reflector_client: true, description: "RR client R5" }
+  - { ip: 123.45.0.7, remote_as: 123, update_source: Loopback0, route_reflector_client: true, description: "RR client R7" }
+  - { ip: 123.45.0.8, remote_as: 123, update_source: Loopback0, route_reflector_client: true, description: "RR client R8" }

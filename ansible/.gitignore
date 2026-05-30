@@ -1,0 +1,8 @@
+# 런타임 산출물
+backups/
+reports/
+*.retry
+
+# 자격증명(절대 커밋 금지) — secrets.example.yml 만 커밋
+group_vars/all/vault.yml
+secrets.yml

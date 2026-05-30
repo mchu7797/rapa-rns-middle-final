@@ -1,0 +1,12 @@
+---
+# 모든 장비의 running-config 를 backups/ 디렉터리에 백업
+- name: running-config 백업
+  hosts: routers
+  gather_facts: false
+  tasks:
+    - name: running-config 가져오기
+      cisco.ios.ios_config:
+        backup: true
+        backup_options:
+          dir_path: "{{ playbook_dir }}/backups"
+          filename: "{{ inventory_hostname }}.cfg"

@@ -1,0 +1,18 @@
+{% for iface in interfaces %}
+interface {{ iface.name }}
+{% if iface.description is defined %}
+ description {{ iface.description }}
+{% endif %}
+{% if iface.ipv4 is defined %}
+ ip address {{ iface.ipv4 }} {{ iface.mask }}
+{% else %}
+ no ip address
+{% endif %}
+{% if iface.ospf_network is defined %}
+ ip ospf network {{ iface.ospf_network }}
+{% endif %}
+{% for line in iface.extra_config | default([]) %}
+ {{ line }}
+{% endfor %}
+ no shutdown
+{% endfor %}
