@@ -1,0 +1,88 @@
+hostname: R6
+
+interfaces:
+  config:
+    - name: Ethernet0/0
+      description: TO_R2
+      enabled: true
+    - name: Ethernet0/2
+      description: TO_KT1_LG1_PEERING
+      enabled: true
+    - name: Loopback0
+      description: R6_Loopback
+      enabled: true
+    # unused ports
+    - name: Ethernet0/1
+      enabled: false
+    - name: Ethernet0/3
+      enabled: false
+    - name: Ethernet1/0
+      enabled: false
+    - name: Ethernet1/1
+      enabled: false
+    - name: Ethernet1/2
+      enabled: false
+    - name: Ethernet1/3
+      enabled: false
+    - name: Ethernet2/0
+      enabled: false
+    - name: Ethernet2/1
+      enabled: false
+    - name: Ethernet2/2
+      enabled: false
+    - name: Ethernet2/3
+      enabled: false
+
+l3_interfaces:
+  config:
+    - name: Ethernet0/0
+      ipv4:
+        - address: 123.45.67.14/30
+    - name: Ethernet0/2
+      ipv4:
+        - address: 123.45.67.46/29
+    - name: Loopback0
+      ipv4:
+        - address: 123.45.0.6/32
+
+ospf_interfaces:
+  config:
+    - name: Ethernet0/0
+      address_family:
+        - afi: ipv4
+          network:
+            point_to_point: true
+
+ospfv2:
+  config:
+    processes:
+      - process_id: 1
+        prefix_suppression: true
+        passive_interfaces:
+          interface:
+            set_interface: true
+            name:
+              - Ethernet0/2
+        network:
+          - address: 123.45.0.6
+            wildcard_bits: 0.0.0.0
+            area: "0"
+          - address: 123.45.67.0
+            wildcard_bits: 0.0.0.255
+            area: "0"
+
+bgp_global:
+  config:
+    as_number: "{{ bgp_as }}"
+    bgp:
+      log_neighbor_changes: true
+    neighbors:
+      - neighbor_address: 123.45.0.2
+        remote_as: "{{ bgp_as }}"
+        update_source: Loopback0
+        next_hop_self:
+          set: true
+      - neighbor_address: 123.45.67.41
+        remote_as: "1111"
+      - neighbor_address: 123.45.67.42
+        remote_as: "1112"

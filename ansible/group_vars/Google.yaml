@@ -1,0 +1,3 @@
+---
+# Google — external peer AS
+bgp_as: "1234"

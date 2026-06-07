@@ -1,0 +1,31 @@
+---
+- name: Render all IOS router configs
+  hosts: all
+  gather_facts: false
+
+  vars:
+    resource_state: rendered
+
+  tasks:
+    - name: Render resource configurations
+      ansible.builtin.import_role:
+        name: ios_config
+
+    - name: Show rendered commands
+      ansible.builtin.debug:
+        msg:
+          host: "{{ inventory_hostname }}"
+          hostname: "{{ r_hostname.rendered | default([]) }}"
+          domain: "{{ ['ip domain name ' ~ domain] if domain is defined and hostname is defined else [] }}"
+          interfaces: "{{ r_interfaces.rendered | default([]) }}"
+          l3_interfaces: "{{ r_l3_interfaces.rendered | default([]) }}"
+          ospf_interfaces: "{{ r_ospf_interfaces.rendered | default([]) }}"
+          ospfv2: "{{ r_ospfv2.rendered | default([]) }}"
+          bgp: "{{ r_bgp.rendered | default([]) }}"
+      when: >-
+        hostname is defined or
+        interfaces is defined or
+        l3_interfaces is defined or
+        ospf_interfaces is defined or
+        ospfv2 is defined or
+        bgp_global is defined

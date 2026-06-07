@@ -1,0 +1,94 @@
+hostname: R5
+
+interfaces:
+  config:
+    - name: Ethernet0/0
+      description: TO_R1
+      enabled: true
+    - name: Ethernet0/1
+      description: CUSTOMER_123.45.1.0
+      enabled: true
+    - name: Ethernet2/0
+      description: TO_R8
+      enabled: true
+    - name: Loopback0
+      description: R5_Loopback
+      enabled: true
+    # unused ports
+    - name: Ethernet0/2
+      enabled: false
+    - name: Ethernet0/3
+      enabled: false
+    - name: Ethernet1/0
+      enabled: false
+    - name: Ethernet1/1
+      enabled: false
+    - name: Ethernet1/2
+      enabled: false
+    - name: Ethernet1/3
+      enabled: false
+    - name: Ethernet2/1
+      enabled: false
+    - name: Ethernet2/2
+      enabled: false
+    - name: Ethernet2/3
+      enabled: false
+
+l3_interfaces:
+  config:
+    - name: Ethernet0/0
+      ipv4:
+        - address: 123.45.67.18/30
+    - name: Ethernet0/1
+      ipv4:
+        - address: 123.45.1.1/30
+    - name: Ethernet2/0
+      ipv4:
+        - address: 123.45.68.41/30
+    - name: Loopback0
+      ipv4:
+        - address: 123.45.0.5/32
+
+ospf_interfaces:
+  config:
+    - name: Ethernet0/0
+      address_family:
+        - afi: ipv4
+          network:
+            point_to_point: true
+    - name: Ethernet2/0
+      address_family:
+        - afi: ipv4
+          network:
+            point_to_point: true
+
+ospfv2:
+  config:
+    processes:
+      - process_id: 1
+        prefix_suppression: true
+        network:
+          - address: 123.45.0.5
+            wildcard_bits: 0.0.0.0
+            area: "1"
+          - address: 123.45.67.0
+            wildcard_bits: 0.0.0.255
+            area: "0"
+          - address: 123.45.68.0
+            wildcard_bits: 0.0.0.255
+            area: "1"
+
+bgp_global:
+  config:
+    as_number: "{{ bgp_as }}"
+    bgp:
+      log_neighbor_changes: true
+    networks:
+      - address: 123.45.1.0
+        netmask: 255.255.255.252
+    neighbors:
+      - neighbor_address: 123.45.0.1
+        remote_as: "{{ bgp_as }}"
+        update_source: Loopback0
+        next_hop_self:
+          set: true

@@ -1,0 +1,5 @@
+---
+# LG — BGP confederation 1112 (sub-AS 65535 by default; LG_4 overrides to 65536)
+bgp_as: "65535"
+lg_confederation_identifier: "1112"
+lg_confederation_peers: "65536"

@@ -1,0 +1,3 @@
+---
+# KT — external peer AS
+bgp_as: "1111"

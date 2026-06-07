@@ -1,0 +1,5 @@
+---
+# Default state for resource modules. Override per-play:
+#   merged   -> push config to the device
+#   rendered -> dry-run, only render the CLI commands
+resource_state: merged

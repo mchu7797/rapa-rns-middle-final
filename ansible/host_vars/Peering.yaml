@@ -1,0 +1,13 @@
+# L2 peering switch — no L3/routing, just keeps the peering ports up.
+hostname: INTER_PEERING
+
+interfaces:
+  config:
+    - name: Ethernet0/0
+      enabled: true
+    - name: Ethernet0/1
+      enabled: true
+    - name: Ethernet0/2
+      enabled: true
+    - name: Ethernet0/3
+      enabled: true

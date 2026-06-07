@@ -1,0 +1,3 @@
+---
+# AT&T core — single iBGP autonomous system
+bgp_as: "123"

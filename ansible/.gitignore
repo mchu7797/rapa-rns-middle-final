@@ -1,0 +1,11 @@
+# Ansible
+*.retry
+collections/ansible_collections/
+
+# Vault password file — never commit
+.vault_pass
+vault_pass.txt
+
+# Editor / OS
+*.swp
+.DS_Store

@@ -1,0 +1,50 @@
+ATNT:
+  hosts:
+    R1:
+      ansible_host: 192.168.11.1
+    R2:
+      ansible_host: 192.168.11.2
+    R3:
+      ansible_host: 192.168.11.3
+    R4:
+      ansible_host: 192.168.11.4
+    R5:
+      ansible_host: 192.168.11.5
+    R6:
+      ansible_host: 192.168.11.6
+    R7:
+      ansible_host: 192.168.11.7
+    R8:
+      ansible_host: 192.168.11.8
+Transit:
+  hosts:
+    Peering:
+      ansible_host: 192.168.12.1
+Google:
+  hosts:
+    GOOGLE:
+      ansible_host: 192.168.13.1
+KT:
+  hosts:
+    KT_1:
+      ansible_host: 192.168.14.1
+    KT_2:
+      ansible_host: 192.168.14.2
+    KT_3:
+      ansible_host: 192.168.14.3
+    KT_4:
+      ansible_host: 192.168.14.4
+    KT_5:
+      ansible_host: 192.168.14.5
+    KT_6:
+      ansible_host: 192.168.14.6
+LG:
+  hosts:
+    LG_1:
+      ansible_host: 192.168.15.1
+    LG_2:
+      ansible_host: 192.168.15.2
+    LG_3:
+      ansible_host: 192.168.15.3
+    LG_4:
+      ansible_host: 192.168.15.4

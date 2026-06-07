@@ -1,0 +1,85 @@
+hostname: R3
+
+interfaces:
+  config:
+    - name: Ethernet0/0
+      description: TO_R1
+      enabled: true
+    - name: Ethernet1/0
+      description: TO_R7
+      enabled: true
+    - name: Loopback0
+      description: R3_Loopback
+      enabled: true
+    # unused ports
+    - name: Ethernet0/1
+      enabled: false
+    - name: Ethernet0/2
+      enabled: false
+    - name: Ethernet0/3
+      enabled: false
+    - name: Ethernet1/1
+      enabled: false
+    - name: Ethernet1/2
+      enabled: false
+    - name: Ethernet1/3
+      enabled: false
+    - name: Ethernet2/0
+      enabled: false
+    - name: Ethernet2/1
+      enabled: false
+    - name: Ethernet2/2
+      enabled: false
+    - name: Ethernet2/3
+      enabled: false
+
+l3_interfaces:
+  config:
+    - name: Ethernet0/0
+      ipv4:
+        - address: 123.45.67.6/30
+    - name: Ethernet1/0
+      ipv4:
+        - address: 123.45.68.37/30
+    - name: Loopback0
+      ipv4:
+        - address: 123.45.0.3/32
+
+ospf_interfaces:
+  config:
+    - name: Ethernet0/0
+      address_family:
+        - afi: ipv4
+          network:
+            point_to_point: true
+    - name: Ethernet1/0
+      address_family:
+        - afi: ipv4
+          network:
+            point_to_point: true
+
+ospfv2:
+  config:
+    processes:
+      - process_id: 1
+        prefix_suppression: true
+        network:
+          - address: 123.45.0.3
+            wildcard_bits: 0.0.0.0
+            area: "1"
+          - address: 123.45.67.0
+            wildcard_bits: 0.0.0.255
+            area: "0"
+          - address: 123.45.68.0
+            wildcard_bits: 0.0.0.255
+            area: "1"
+
+bgp_global:
+  config:
+    as_number: "{{ bgp_as }}"
+    bgp:
+      log_neighbor_changes: true
+    neighbors:
+      - neighbor_address: 123.45.0.1
+        remote_as: "{{ bgp_as }}"
+        update_source: Loopback0

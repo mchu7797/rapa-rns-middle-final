@@ -1,0 +1,52 @@
+---
+- name: Configure hostname
+  cisco.ios.ios_hostname:
+    config:
+      hostname: "{{ hostname }}"
+    state: "{{ resource_state }}"
+  register: r_hostname
+  when: hostname is defined
+
+- name: Configure domain name
+  cisco.ios.ios_system:
+    domain_name: "{{ domain }}"
+    state: present
+  when:
+    - resource_state != 'rendered'
+    - domain is defined
+    - hostname is defined
+
+- name: Configure interfaces
+  cisco.ios.ios_interfaces:
+    config: "{{ interfaces.config }}"
+    state: "{{ resource_state }}"
+  register: r_interfaces
+  when: interfaces is defined
+
+- name: Configure L3 interfaces
+  cisco.ios.ios_l3_interfaces:
+    config: "{{ l3_interfaces.config }}"
+    state: "{{ resource_state }}"
+  register: r_l3_interfaces
+  when: l3_interfaces is defined
+
+- name: Configure OSPF interfaces
+  cisco.ios.ios_ospf_interfaces:
+    config: "{{ ospf_interfaces.config }}"
+    state: "{{ resource_state }}"
+  register: r_ospf_interfaces
+  when: ospf_interfaces is defined
+
+- name: Configure OSPFv2
+  cisco.ios.ios_ospfv2:
+    config: "{{ ospfv2.config }}"
+    state: "{{ resource_state }}"
+  register: r_ospfv2
+  when: ospfv2 is defined
+
+- name: Configure BGP
+  cisco.ios.ios_bgp_global:
+    config: "{{ bgp_global.config }}"
+    state: "{{ resource_state }}"
+  register: r_bgp
+  when: bgp_global is defined

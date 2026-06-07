@@ -1,0 +1,10 @@
+---
+- name: Apply all IOS router configs
+  hosts: all
+  gather_facts: false
+
+  vars:
+    resource_state: merged
+
+  roles:
+    - ios_config

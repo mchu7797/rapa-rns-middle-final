@@ -1,0 +1,39 @@
+hostname: GOOGLE
+
+interfaces:
+  config:
+    - name: Ethernet0/0
+      description: TO_R7
+      enabled: true
+    - name: Ethernet0/1
+      description: TO_R8
+      enabled: true
+    - name: Ethernet0/2
+      description: GOOGLE_PUBLIC
+      enabled: true
+
+l3_interfaces:
+  config:
+    - name: Ethernet0/0
+      ipv4:
+        - address: 123.45.68.246/30
+    - name: Ethernet0/1
+      ipv4:
+        - address: 123.45.68.250/30
+    - name: Ethernet0/2
+      ipv4:
+        - address: 8.8.8.62/24
+
+bgp_global:
+  config:
+    as_number: "{{ bgp_as }}"
+    bgp:
+      log_neighbor_changes: true
+    networks:
+      - address: 8.8.8.0
+        netmask: 255.255.255.0
+    neighbors:
+      - neighbor_address: 123.45.68.245
+        remote_as: "123"
+      - neighbor_address: 123.45.68.249
+        remote_as: "123"

@@ -1,0 +1,82 @@
+hostname: LG_1
+
+interfaces:
+  config:
+    - name: Loopback0
+      description: LG_1_Loopback
+      enabled: true
+    - name: Ethernet0/0
+      description: TO_ATNT_PEERING
+      enabled: true
+    - name: Ethernet0/1
+      description: TO_LG_2
+      enabled: true
+    - name: Ethernet0/2
+      description: TO_LG_3
+      enabled: true
+    # unused ports
+    - name: Ethernet2/0
+      enabled: false
+    - name: Ethernet2/1
+      enabled: false
+    - name: Ethernet2/2
+      enabled: false
+    - name: Ethernet2/3
+      enabled: false
+
+l3_interfaces:
+  config:
+    - name: Loopback0
+      ipv4:
+        - address: 63.250.0.1/32
+    - name: Ethernet0/0
+      ipv4:
+        - address: 123.45.67.42/29
+    - name: Ethernet0/1
+      ipv4:
+        - address: 63.250.124.137/30
+    - name: Ethernet0/2
+      ipv4:
+        - address: 63.250.124.145/30
+
+ospfv2:
+  config:
+    processes:
+      - process_id: 1
+        prefix_suppression: true
+        passive_interfaces:
+          interface:
+            set_interface: true
+            name:
+              - Ethernet0/0
+        network:
+          - address: 63.250.0.1
+            wildcard_bits: 0.0.0.0
+            area: "0"
+          - address: 63.250.124.0
+            wildcard_bits: 0.0.0.255
+            area: "0"
+
+bgp_global:
+  config:
+    as_number: "{{ bgp_as }}"
+    bgp:
+      log_neighbor_changes: true
+      confederation:
+        identifier: "{{ lg_confederation_identifier }}"
+        peers: "{{ lg_confederation_peers }}"
+    neighbors:
+      - neighbor_address: 63.250.0.2
+        remote_as: "{{ bgp_as }}"
+        update_source: Loopback0
+        next_hop_self:
+          set: true
+      - neighbor_address: 63.250.0.3
+        remote_as: "{{ bgp_as }}"
+        update_source: Loopback0
+        next_hop_self:
+          set: true
+      - neighbor_address: 123.45.67.45
+        remote_as: "123"
+      - neighbor_address: 123.45.67.46
+        remote_as: "123"
