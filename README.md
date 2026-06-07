@@ -11,7 +11,7 @@
 3. [Local SP 구성 (KT / LG)](#local-sp-구성-kt--lg)
 4. [Global CP & User 구성](#global-cp--user-구성)
 5. [Local CP & User 구성](#local-cp--user-구성)
-6. [제출 항목](#제출-항목)
+6. [Ansible 자동화 구성](#ansible-자동화-구성)
 
 ---
 
@@ -152,25 +152,53 @@ echo Welcome to NAVER > /var/www/html/index.html
 
 ---
 
-## 제출 항목
+## Ansible 자동화 구성
 
-### Configuration
+위 토폴로지의 라우터 설정(hostname, 인터페이스, L3, OSPF, BGP)을 수작업 대신
+**Ansible**로 일괄 적용하도록 구성했습니다. `cisco.ios` 컬렉션의 resource 모듈을
+사용하므로 멱등성(idempotent)이 보장되어, 같은 플레이북을 반복 실행해도 변경분만
+반영됩니다. 자세한 내용은 [`ansible/README.md`](ansible/README.md) 참고.
 
-- [*] `show run | sec ospf`
-- [*] `show run | sec bgp`
-- [*] `show int des`
+### 디렉터리 구조
 
-### Global & Local SP
+```
+ansible/
+├── ansible.cfg                  # inventory 경로, roles_path, connection 튜닝
+├── inventory.yaml               # 장비 그룹 (ATNT / Transit / Google / KT / LG)
+├── collections/requirements.yml # 필요한 Ansible 컬렉션 (cisco.ios)
+├── group_vars/
+│   ├── all/vars.yaml            # 공통 connection 변수 + vault 참조
+│   ├── all/vault.yaml           # 인증 정보 (ansible-vault 암호화)
+│   └── {ATNT,Google,KT,LG}.yaml # 그룹별 BGP AS 등 공통 변수
+├── host_vars/*.yaml             # 장비별 인터페이스 / OSPF / BGP 설정
+├── roles/ios_config/            # 설정을 적용하는 재사용 role
+└── playbooks/
+    ├── render_all.yaml          # dry-run: 적용될 CLI만 출력 (state: rendered)
+    └── apply_all.yaml           # 실제 장비에 설정 반영 (state: merged)
+```
 
-- [*] OSPF Neighbor Table
-- [*] OSPF Routing Table
-- [*] BGP Neighbor Table
-- [*] BGP Table
-- [*] BGP Routing Table
+### 관리 대상
 
-### User ↔ CP 통신
+| 그룹 | 장비 | 비고 |
+|------|------|------|
+| ATNT | R1 ~ R8 | Global SP (AT&T) |
+| Transit | Peering | International Peering |
+| Google | GOOGLE | Global CP |
+| KT | KT_1 ~ KT_6 | Local SP (KT) |
+| LG | LG_1 ~ LG_4 | Local SP (LG) |
 
-- [*] Local User → Local CP 통신 Flow 및 학습 경로
-- [*] Local User → Global CP 통신 Flow 및 학습 경로
-- [*] Global User → Local CP 통신 Flow 및 학습 경로
-- [*] Global User → Global CP 통신 Flow 및 학습 경로
+### 사용법
+
+```bash
+# 0. 컬렉션 설치 (최초 1회)
+ansible-galaxy collection install -r ansible/collections/requirements.yml
+
+# 1. 적용될 CLI 미리보기 (장비 변경 없음)
+ansible-playbook ansible/playbooks/render_all.yaml --ask-vault-pass
+
+# 2. 전체 장비에 설정 반영
+ansible-playbook ansible/playbooks/apply_all.yaml --ask-vault-pass
+
+# 3. 특정 그룹/장비만 적용
+ansible-playbook ansible/playbooks/apply_all.yaml --limit KT --ask-vault-pass
+```
